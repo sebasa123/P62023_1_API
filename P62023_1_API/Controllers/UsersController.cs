@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using P62023_1_API.Models;
 using P62023_1_API.Attributes;
 using P62023_1_API.ModelsDTOs;
+using P62023_1_API.Tools;
 
 namespace P62023_1_API.Controllers
 {
@@ -17,10 +18,11 @@ namespace P62023_1_API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly P620231_AutoAppoContext _context;
-
+        public Crypto MyCryto { get; set; }
         public UsersController(P620231_AutoAppoContext context)
         {
             _context = context;
+            MyCryto = new Crypto();
         }
 
         // GET: api/Users
@@ -47,8 +49,9 @@ namespace P62023_1_API.Controllers
         [HttpGet("ValidateUserLogin")]
         public async Task<ActionResult<User>> ValidateUserLogin(string pUserName, string pPassword)
         {
+            string EncryptedPassword = MyCryto.EncriptarEnUnSentido(pPassword);
             var user = await _context.Users.SingleOrDefaultAsync(e =>
-            e.Email == pUserName && e.LoginPassword == pPassword);
+                e.Email == pUserName && e.LoginPassword == EncryptedPassword);
             if (user == null)
             {
                 return NotFound();
@@ -140,6 +143,8 @@ namespace P62023_1_API.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
+            string EncriptedPassword = MyCryto.EncriptarEnUnSentido(user.LoginPassword);
+            user.LoginPassword = EncriptedPassword;
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
