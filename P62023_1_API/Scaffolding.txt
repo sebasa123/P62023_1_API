@@ -1,1 +1,2 @@
 ﻿Scaffold-DbContext -f "SERVER=LAPTOP-0OCE7TFC\SQLEXPRESS;DATABASE=P620231_AutoAppo; INTEGRATED SECURITY=TRUE;User Id=;Password=" Microsoft.EntityframeworkCore.SqlServer -OutputDir Models
+Scaffold-DbContext -f "SERVER=LAPTOP-0OCE7TFC\SQLEXPRESS;DATABASE=P620231_AutoAppo; INTEGRATED SECURITY=TRUE;User Id=;Password=" Microsoft.EntityframeworkCore.SqlServer -OutputDir Models -Context P620231_AutoAppoContext -Tables "RecoveryCode"

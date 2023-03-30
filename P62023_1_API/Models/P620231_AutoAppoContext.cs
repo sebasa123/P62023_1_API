@@ -18,11 +18,13 @@ namespace P62023_1_API.Models
 
         public virtual DbSet<Appointment> Appointments { get; set; } = null!;
         public virtual DbSet<AppointmentStatus> AppointmentStatuses { get; set; } = null!;
+        public virtual DbSet<RecoveryCode> RecoveryCodes { get; set; } = null!;
         public virtual DbSet<Schedule> Schedules { get; set; } = null!;
         public virtual DbSet<Service> Services { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<UserRole> UserRoles { get; set; } = null!;
         public virtual DbSet<UserStatus> UserStatuses { get; set; } = null!;
+        public virtual DbSet<View1> View1s { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -96,6 +98,26 @@ namespace P62023_1_API.Models
                 entity.Property(e => e.AppoStatusDescription)
                     .HasMaxLength(255)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<RecoveryCode>(entity =>
+            {
+                entity.ToTable("RecoveryCode");
+
+                entity.Property(e => e.RecoveryCodeId).HasColumnName("RecoveryCodeID");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(255)
+                    .IsFixedLength();
+
+                entity.Property(e => e.GenerateDate)
+                    .HasColumnType("smalldatetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.RecoveryCode1)
+                    .HasMaxLength(6)
+                    .HasColumnName("RecoveryCode")
+                    .IsFixedLength();
             });
 
             modelBuilder.Entity<Schedule>(entity =>
@@ -204,6 +226,50 @@ namespace P62023_1_API.Models
                 entity.Property(e => e.UserStatuDescription)
                     .HasMaxLength(255)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<View1>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("View_1");
+
+                entity.Property(e => e.Address)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CardId)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("CardID");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LoginPassword)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PhoneNumber)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
+
+                entity.Property(e => e.UserRoleDescription)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserStatuDescription)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserStatusId).HasColumnName("UserStatusID");
             });
 
             OnModelCreatingPartial(modelBuilder);
