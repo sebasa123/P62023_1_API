@@ -43,6 +43,20 @@ namespace P62023_1_API.Controllers
             return appointment;
         }
 
+        // GET: api/Appointments/5
+        [HttpGet("GetAppointmentListByUser")]
+        public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointmentListByID(int pUserID)
+        {
+            var appointmentList = await _context.Appointments.Where(u => u.UserId == pUserID).ToListAsync();
+
+            if (appointmentList == null)
+            {
+                return NotFound();
+            }
+
+            return appointmentList;
+        }
+
         // PUT: api/Appointments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
