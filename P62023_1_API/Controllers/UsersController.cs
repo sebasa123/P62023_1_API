@@ -110,14 +110,40 @@ namespace P62023_1_API.Controllers
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUser(int id, UserDTO user)
         {
-            if (id != user.UserId)
+            if (id != user.IDUsuario)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            string Password = "";
+            if (user.Contrasenna.Length <= 60)
+            {
+                Password = MyCryto.EncriptarEnUnSentido(user.Contrasenna);
+            }
+            else 
+            {
+                Password = user.Contrasenna;
+            }
+
+            User NuevoUsuario = new()
+            {
+                UserId = user.IDUsuario,
+                Name = user.Nombre,
+                CardId = user.Cedula,
+                PhoneNumber = user.NumeroTelefono,
+                Address = user.Direccion,
+                LoginPassword = Password,
+                Email = user.Correo,
+                UserRoleId = user.IDRol,
+                UserStatusId = user.IDEstado,
+                Appointments = null, 
+                UserRole = null,
+                UserStatus = null
+            };
+
+            _context.Entry(NuevoUsuario).State = EntityState.Modified;
 
             try
             {
@@ -135,7 +161,7 @@ namespace P62023_1_API.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/Users

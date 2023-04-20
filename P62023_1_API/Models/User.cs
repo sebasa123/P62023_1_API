@@ -22,6 +22,6 @@ namespace P62023_1_API.Models
 
         public virtual UserRole? UserRole { get; set; } = null!;
         public virtual UserStatus? UserStatus { get; set; } = null!;
-        public virtual ICollection<Appointment> Appointments { get; set; }
+        public virtual ICollection<Appointment>? Appointments { get; set; }
     }
 }
